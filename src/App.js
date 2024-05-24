@@ -1,11 +1,13 @@
-import logo from './logo.svg';
 import './App.css';
-import { Button } from 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Header from './Components/Header';
+
 
 function App() {
   return (
-    <Button variant="primary">Button</Button>
+    <div>
+      <Header />
+    </div>
   );
 }
 
