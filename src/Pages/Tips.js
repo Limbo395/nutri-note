@@ -1,9 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
+import Header from "../Components/Header";
 
 export default class Tips extends Component {
   render() {
     return (
-      <div>Tips</div>
-    )
+      <>
+        <Header />
+        <h2>Tips</h2>
+      </>
+    );
   }
 }

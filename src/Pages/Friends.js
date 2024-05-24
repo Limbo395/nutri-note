@@ -1,9 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
+import Header from "../Components/Header";
 
 export default class Friends extends Component {
   render() {
     return (
-      <div>Friends</div>
-    )
+      <>
+        <Header />
+        <h2>Friends</h2>
+      </>
+    );
   }
 }
