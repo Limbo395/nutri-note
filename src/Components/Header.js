@@ -22,17 +22,17 @@ export default class Header extends Component {
                 width="50"
                 className="d-inline-block align-top"
                 alt="Logo"
-              />{" "}
+              />
               NutriNote
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="ml-auto">
-                <Nav.Link href="/account"> Профіль </Nav.Link>
-                <Nav.Link href="/calendar"> Календар </Nav.Link>
-                <Nav.Link href="/history"> Історія </Nav.Link>
-                <Nav.Link href="/friends"> Друзі </Nav.Link>
-                <Nav.Link href="/tips"> Поради </Nav.Link>
+                <Nav.Link href="/account"> Profile </Nav.Link>
+                <Nav.Link href="/calendar"> Calendar </Nav.Link>
+                <Nav.Link href="/notes"> Notes </Nav.Link>
+                <Nav.Link href="/friends"> Friends </Nav.Link>
+                <Nav.Link href="/tips"> Tips </Nav.Link>
               </Nav>
             </Navbar.Collapse>
           </Container>

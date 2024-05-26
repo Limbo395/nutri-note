@@ -6,7 +6,7 @@ export default class History extends Component {
     return (
       <>
         <Header />
-        <h2>History</h2>
+        <h2>Notes</h2>
       </>
     );
   }

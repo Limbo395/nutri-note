@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./AuthPage.css";
+import logo from "../Pictures/Logo.png";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -22,7 +23,14 @@ const AuthPage = () => {
         <Row className="justify-content-md-center">
           <Col md="6">
             <div className="form-header">
-              <h2>{isLogin ? "Login" : "Register"}</h2>
+              <img
+                src={logo}
+                height="250"
+                width="250"
+                className="d-inline-block align-top"
+                alt="Logo"
+              />
+              <h2>{"NutriNote"}</h2>
             </div>
             <Form onSubmit={handleSubmit}>
               {!isLogin && (
