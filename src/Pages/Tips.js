@@ -61,3 +61,4 @@ export default class Tips extends Component {
   }
 }
 // просто що-небудь
+// просто що-небудь №2
