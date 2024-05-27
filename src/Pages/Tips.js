@@ -60,3 +60,4 @@ export default class Tips extends Component {
     );
   }
 }
+// просто що-небудь
