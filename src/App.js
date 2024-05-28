@@ -7,6 +7,7 @@ import Notes from "./Pages/Notes";
 import Friends from "./Pages/Friends";
 import Tips from "./Pages/Tips";
 import AuthPage from "./Pages/AuthPage";
+import "./App.css"
 
 function App() {
   return (
