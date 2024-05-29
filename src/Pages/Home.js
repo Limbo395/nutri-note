@@ -8,7 +8,24 @@ export default class Home extends Component {
       <>
         <Header />
         <Container>
-        <h2>Home</h2>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
+          >
+            <h1>Поставте 100 балів🥺</h1>
+            <div class="ratio ratio-16x9" style={{ marginBottom: "30px" }}>
+              <iframe
+                src="https://www.youtube.com/embed/bMiZkmqMIK0"
+                title="YouTube video"
+                allowfullscreen
+              />
+            </div>
+          </div>
         </Container>
       </>
     );

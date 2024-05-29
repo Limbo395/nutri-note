@@ -4,7 +4,7 @@ import { Container } from "react-bootstrap";
 export default class Page5 extends Component {
   render() {
     return (
-      <Container style={{ marginTop: '20px' }}>
+      <Container style={{ marginTop: "20px" }}>
         <h1>Tips for Healthy Eating</h1>
         <p>
           Healthy eating doesn't have to be complicated. Focus on incorporating

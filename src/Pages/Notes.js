@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import Header from "../Components/Header";
+import { Container } from "react-bootstrap";
 
 export default class History extends Component {
   render() {
     return (
       <>
         <Header />
-        <h2>Notes</h2>
+        <Container>
+          <h2>Notes</h2>
+        </Container>
       </>
     );
   }

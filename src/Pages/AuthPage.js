@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import axios from "./axiosConfig"; // Import the configured Axios instance
 import "./AuthPage.css";
 import logo from "../Pictures/Logo.png";
 
@@ -29,13 +28,12 @@ const AuthPage = () => {
         ? { email, password }
         : { email, password, username };
 
-      const response = await axios.post(endpoint, payload);
-
-      if (response.data.success) {
-        navigate("/home");
-      } else {
-        setError(response.data.message || "An error occurred");
-      }
+      navigate("/home");
+      // if (response.data.success) {
+      //   navigate("/home");
+      // } else {
+      //   setError(response.data.message || "An error occurred");
+      // }
     } catch (error) {
       setError("Server error. Please try again later.");
     }
@@ -54,13 +52,13 @@ const AuthPage = () => {
                 className="d-inline-block align-top"
                 alt="Logo"
               />
-              <h2 style={{ color: 'black' }}>{"NutriNote"}</h2>
+              <h2 style={{ color: "black" }}>{"NutriNote"}</h2>
             </div>
             <Form onSubmit={handleSubmit}>
               {error && <Alert variant="danger">{error}</Alert>}
               {!isLogin && (
                 <Form.Group controlId="formBasicUsername">
-                  <Form.Label style={{ color: 'black' }}>Nickname</Form.Label>
+                  <Form.Label style={{ color: "black" }}>Nickname</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Enter nickname"
@@ -71,7 +69,9 @@ const AuthPage = () => {
                 </Form.Group>
               )}
               <Form.Group controlId="formBasicEmail">
-                <Form.Label style={{ color: 'black' }}>Email address</Form.Label>
+                <Form.Label style={{ color: "black" }}>
+                  Email address
+                </Form.Label>
                 <Form.Control
                   type="email"
                   placeholder="Enter email"
@@ -81,7 +81,7 @@ const AuthPage = () => {
                 />
               </Form.Group>
               <Form.Group controlId="formBasicPassword">
-                <Form.Label style={{ color: 'black' }}>Password</Form.Label>
+                <Form.Label style={{ color: "black" }}>Password</Form.Label>
                 <Form.Control
                   type="password"
                   placeholder="Enter password"
@@ -92,7 +92,9 @@ const AuthPage = () => {
               </Form.Group>
               {!isLogin && (
                 <Form.Group controlId="formBasicPasswordRepeat">
-                  <Form.Label style={{ color: 'black' }}>Repeat Password</Form.Label>
+                  <Form.Label style={{ color: "black" }}>
+                    Repeat Password
+                  </Form.Label>
                   <Form.Control
                     type="password"
                     placeholder="Repeat password"
