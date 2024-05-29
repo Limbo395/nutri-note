@@ -1,8 +1,13 @@
 const express = require('express');
 const mysql = require('mysql');
+const bodyParser = require('body-parser');
+const cors = require('cors'); // Import CORS
 
 const app = express();
-const port = 3001;
+const port = 3000;
+
+app.use(cors()); // Use CORS middleware
+app.use(bodyParser.json());
 
 const connection = mysql.createConnection({
     host: '34.79.184.250',
@@ -19,13 +24,35 @@ connection.connect(err => {
     console.log('Connected to MySQL');
 });
 
-app.get('/api/data', (req, res) => {
-    connection.query('SELECT * FROM NutriNote', (err, results) => {
+app.post('/api/register', (req, res) => {
+    const { username, email, password } = req.body;
+    const query = 'INSERT INTO Users (Tag, `E-mail`, Password) VALUES (?, ?, ?)';
+
+    connection.query(query, [username, email, password], (err) => {
         if (err) {
-            res.status(500).send('Server error');
+            console.error('Error during registration:', err);
+            res.status(500).send({ success: false, message: 'Server error' });
             return;
         }
-        res.json(results);
+        res.send({ success: true });
+    });
+});
+
+app.post('/api/login', (req, res) => {
+    const { email, password } = req.body;
+    const query = 'SELECT * FROM Users WHERE `E-mail` = ? AND Password = ?';
+
+    connection.query(query, [email, password], (err, results) => {
+        if (err) {
+            console.error('Error during login:', err);
+            res.status(500).send({ success: false, message: 'Server error' });
+            return;
+        }
+        if (results.length > 0) {
+            res.send({ success: true });
+        } else {
+            res.send({ success: false, message: 'Invalid credentials' });
+        }
     });
 });
 
