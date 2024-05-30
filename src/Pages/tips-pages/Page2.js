@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container } from "react-bootstrap";
 import eatRight from "../../Pictures/eat-right.png";
-import "./Page2.css"; // Import the CSS file
+import "./Page2.css";
 
 export default class Page2 extends Component {
   render() {
