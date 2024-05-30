@@ -18,19 +18,44 @@ export default class Tips extends Component {
               <Col sm={3}>
                 <Nav variant="pills" className="flex-column mt-2">
                   <Nav.Item>
-                    <Nav.Link eventKey="first" style={{ fontWeight: 'bold' }}>Introduction</Nav.Link>
+                    <Nav.Link
+                      eventKey="first"
+                      style={{ fontWeight: "bold", textAlign: "center" }}
+                    >
+                      Introduction
+                    </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link eventKey="second" style={{ fontWeight: 'bold' }}>Benefits</Nav.Link>
+                    <Nav.Link
+                      eventKey="second"
+                      style={{ fontWeight: "bold", textAlign: "center" }}
+                    >
+                      Benefits
+                    </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link eventKey="third" style={{ fontWeight: 'bold' }}>Importance</Nav.Link>
+                    <Nav.Link
+                      eventKey="third"
+                      style={{ fontWeight: "bold", textAlign: "center" }}
+                    >
+                      Regularity
+                    </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link eventKey="fourth" style={{ fontWeight: 'bold' }}>Mental Health</Nav.Link>
+                    <Nav.Link
+                      eventKey="fourth"
+                      style={{ fontWeight: "bold", textAlign: "center" }}
+                    >
+                      Mental Health
+                    </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link eventKey="fifth" style={{ fontWeight: 'bold' }}>Tips</Nav.Link>
+                    <Nav.Link
+                      eventKey="fifth"
+                      style={{ fontWeight: "bold", textAlign: "center" }}
+                    >
+                      Useful videos
+                    </Nav.Link>
                   </Nav.Item>
                 </Nav>
               </Col>

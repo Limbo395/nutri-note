@@ -6,10 +6,10 @@ import "./Page2.css"; // Import the CSS file
 export default class Page2 extends Component {
   render() {
     return (
-      <Container style={{ marginTop: "20px" }}>
-        <div className="header">
-          <h1>Benefits of a Balanced Diet</h1>
-        </div>
+      <Container style={{ marginBottom: "150px", marginTop: "30px" }}>
+        <h1 className="header">
+          <strong>Benefits of a Balanced Diet</strong>
+        </h1>
         <div className="content">
           <img
             src={eatRight}
