@@ -17,7 +17,7 @@ export default class Friends extends Component {
                 src={addFriend}
                 height="30"
                 width="30"
-                alt="RemoveFriend"
+                alt="AddFriend"
                 style={{ margin: "15px", filter: "brightness(0) invert(1)" }}
               />
             </div>

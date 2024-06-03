@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./AuthPage.css";
 import logo from "../Pictures/Logo.png";
 
@@ -23,17 +24,15 @@ const AuthPage = () => {
 
     try {
       const endpoint = isLogin ? "/api/login" : "/api/register";
-      console.log("Endpoint:", endpoint);
-      const payload = isLogin
-        ? { email, password }
-        : { email, password, username };
+      const payload = isLogin ? { email, password } : { email, password, username };
 
-      navigate("/home");
-      // if (response.data.success) {
-      //   navigate("/home");
-      // } else {
-      //   setError(response.data.message || "An error occurred");
-      // }
+      const response = await axios.post(endpoint, payload);
+
+      if (response.data.success) {
+        navigate("/home");
+      } else {
+        setError(response.data.message || "An error occurred");
+      }
     } catch (error) {
       setError("Server error. Please try again later.");
     }
@@ -69,7 +68,7 @@ const AuthPage = () => {
                 </Form.Group>
               )}
               <Form.Group controlId="formBasicEmail">
-                <Form.Label style={{ color: "black" }}>
+              <Form.Label style={{ color: "black" }}>
                   Email address
                 </Form.Label>
                 <Form.Control
@@ -92,9 +91,7 @@ const AuthPage = () => {
               </Form.Group>
               {!isLogin && (
                 <Form.Group controlId="formBasicPasswordRepeat">
-                  <Form.Label style={{ color: "black" }}>
-                    Repeat Password
-                  </Form.Label>
+                  <Form.Label style={{ color: "black" }}>Repeat Password</Form.Label>
                   <Form.Control
                     type="password"
                     placeholder="Repeat password"
