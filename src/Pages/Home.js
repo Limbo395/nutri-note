@@ -1,33 +1,34 @@
-import React, { Component } from "react";
-import Header from "../Components/Header";
-import { Container } from "react-bootstrap";
+// App.js
+import React, { useState } from "react";
+import { Button } from "react-bootstrap";
+import AddFriend from "./ask-pages/AddFriend";
+import Header from "../Components/Header"
 
-export default class Home extends Component {
-  render() {
-    return (
-      <>
-        <Header />
-        <Container>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              textAlign: "center",
-            }}
-          >
-            <h1 >Поставте 100 балів🥺</h1>
-            <div class="ratio ratio-16x9" style={{ marginBottom: "30px" }}>
-              <iframe
-                src="https://www.youtube.com/embed/bMiZkmqMIK0"
-                title="YouTube video"
-                allowfullscreen
-              />
-            </div>
-          </div>
-        </Container>
-      </>
-    );
-  }
-}
+const Home = () => {
+  const [show, setShow] = useState(false);
+  const [records, setRecords] = useState([]);
+
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+
+  const handleAdd = (newRecord) => {
+    setRecords([...records, newRecord]);
+  };
+
+  return (
+    <>
+    <Header/>
+      <Button variant="primary" onClick={handleShow}>
+        Add Record
+      </Button>
+
+      <AddFriend
+        show={show}
+        handleClose={handleClose}
+        handleAdd={handleAdd}
+      />
+    </>
+  );
+};
+
+export default Home;

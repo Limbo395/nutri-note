@@ -6,7 +6,7 @@ export default class PageFirst extends Component {
     return (
       <Container style={{ marginBottom: "150px", marginTop: "30px" }}>
         <h1 className="header">
-          <strong>Introduction to Healthy Living</strong>
+          <strong>Hello Ola Introduction to Healthy Living</strong>
         </h1>
         <p>
           Healthy living involves making positive choices that enhance your
