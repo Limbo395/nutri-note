@@ -6,7 +6,7 @@ const AccountForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();

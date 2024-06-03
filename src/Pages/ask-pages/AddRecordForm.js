@@ -14,7 +14,7 @@ const AddRecordForm = ({ show, handleClose, handleAdd, editParametrs }) => {
     handleClose();
   };
 
-  if (editParametrs == 0) {
+  if (editParametrs === 0) {
     return (
       <Modal style={{ color: "black" }} show={show} onHide={handleClose}>
         <Modal.Header closeButton>
