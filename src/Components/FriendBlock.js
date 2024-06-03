@@ -26,3 +26,4 @@ export default function FriendBlock({ name, link }) {
     </>
   );
 }
+
