@@ -15,7 +15,7 @@ export default class Tips extends Component {
         <Container>
           <Tab.Container id="left-tabs-example" defaultActiveKey="first">
             <Row>
-              <Col sm={3}>
+              <Col sm={3} style={{borderRadius: "10px", backgroundColor: "#22262a", height: "215px", marginTop: "15px"}}>
                 <Nav variant="pills" className="flex-column mt-2">
                   <Nav.Item>
                     <Nav.Link

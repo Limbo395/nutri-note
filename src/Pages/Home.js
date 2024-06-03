@@ -17,7 +17,7 @@ export default class Home extends Component {
               textAlign: "center",
             }}
           >
-            <h1>Поставте 100 балів🥺</h1>
+            <h1 >Поставте 100 балів🥺</h1>
             <div class="ratio ratio-16x9" style={{ marginBottom: "30px" }}>
               <iframe
                 src="https://www.youtube.com/embed/bMiZkmqMIK0"

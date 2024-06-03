@@ -1,0 +1,21 @@
+.circular-image-standart-for-account-page {
+  width: 70px;
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  filter: brightness(0) invert(1);
+  margin: 15px;
+}
+
+.circular-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.header-div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}

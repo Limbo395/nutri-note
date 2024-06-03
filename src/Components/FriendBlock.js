@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import avatar from "../Pictures/standart-avatar.png";
+import standartAavatar from "../Pictures/standart-avatar.png";
 import deletePng from "../Pictures/trashPng.png";
 import "./FriendBlock.css";
 
@@ -9,8 +8,8 @@ export default function FriendBlock({ name, link }) {
       <div className="div-border">
         <img
           style={{ margin: "10px" }}
-          src={avatar}
-          alt="Your Image"
+          src={standartAavatar}
+          alt="Self account"
           className="circular-image-standart"
         />
         <strong style={{ fontSize: "20px" }}>{name}</strong>
