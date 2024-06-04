@@ -1,22 +1,47 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import AvocadoFriend from "../../Pictures/avocado-friend.png";
+import axios from "axios";
 
-const AddFriend = ({ show, handleClose, handleAdd }) => {
+const AddFriend = ({ show, handleClose }) => {
   const [friendTag, setFriendTag] = useState("");
-  const [comment, setComment] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleAdd = async ({ friendTag }) => {
+    try {
+      const token = localStorage.getItem("token"); 
+      const response = await axios.post(
+        "http://34.79.184.250/api/add-friend",
+        { friendTag },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data.success) {
+        alert("Friend added successfully!");
+      } else {
+        alert("Failed to add friend: " + response.data.message);
+      }
+    } catch (error) {
+      console.error("Error adding friend:", error);
+      alert("Error adding friend");
+    }
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    handleAdd({ friendTag, comment });
+    await handleAdd({ friendTag });
     setFriendTag("");
-    setComment("");
     handleClose();
   };
 
   return (
     <Modal style={{ color: "black" }} show={show} onHide={handleClose}>
-      <Modal.Header style={{ alignItems: "center", display: "flex" }} closeButton>
+      <Modal.Header
+        style={{ alignItems: "center", display: "flex" }}
+        closeButton
+      >
         <Modal.Title style={{ fontSize: "30px" }}>
           <img
             style={{ marginRight: "10px" }}
