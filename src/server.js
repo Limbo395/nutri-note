@@ -188,17 +188,33 @@ app.post('/api/edit-note', (req, res) => {
 
 app.post('/api/add-friend', (req, res) => {
     const currentUserId = getCurrentUserId(req);
-    const { friendId } = req.body;
+    const { friendTag, comment } = req.body;
 
-    const query = 'INSERT INTO Friends (Id, IdOfFriend) VALUES (?, ?)';
+    const findFriendQuery = 'SELECT Id FROM Users WHERE Tag = ?';
+    const addFriendQuery = 'INSERT INTO Friends (Id, IdOfFriend) VALUES (?, ?)';
 
-    connection.query(query, [currentUserId, friendId], (err) => {
+    connection.query(findFriendQuery, [friendTag], (err, results) => {
         if (err) {
-            console.error('Error adding friend:', err);
+            console.error('Error finding friend:', err);
             res.status(500).send({ success: false, message: 'Server error' });
             return;
         }
-        res.send({ success: true });
+
+        if (results.length === 0) {
+            res.status(404).send({ success: false, message: 'Friend not found' });
+            return;
+        }
+
+        const friendId = results[0].Id;
+
+        connection.query(addFriendQuery, [currentUserId, friendId], (err) => {
+            if (err) {
+                console.error('Error adding friend:', err);
+                res.status(500).send({ success: false, message: 'Server error' });
+                return;
+            }
+            res.send({ success: true });
+        });
     });
 });
 
