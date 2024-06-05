@@ -6,7 +6,14 @@ import "./Page2.css";
 export default class Page2 extends Component {
   render() {
     return (
-      <Container style={{ marginBottom: "150px", marginTop: "30px" }}>
+      <Container
+        style={{
+          marginTop: "10px",
+          padding: "30px",
+          backgroundColor: "#22262a",
+          borderRadius: "20px",
+        }}
+      >
         <h1 className="header">
           <strong>Benefits of a Balanced Diet</strong>
         </h1>
@@ -55,7 +62,7 @@ export default class Page2 extends Component {
           and incorporating a variety of foods into your meals, you can reap the
           numerous benefits of a well-rounded eating plan.
         </p>
-        <p style={{ marginBottom: "100px" }}>
+        <p>
           For more information, visit the{" "}
           <a href="https://www.nhs.uk/live-well/eat-well/the-eatwell-guide/">
             NHS Eatwell Guide

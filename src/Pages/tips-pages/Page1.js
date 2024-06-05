@@ -4,9 +4,17 @@ import { Container } from "react-bootstrap";
 export default class PageFirst extends Component {
   render() {
     return (
-      <Container style={{ marginBottom: "150px", marginTop: "30px" }}>
+      <Container
+        style={{
+          marginTop: "10px",
+          padding: "30px",
+          paddingBottom: "5px",
+          backgroundColor: "#22262a",
+          borderRadius: "20px",
+        }}
+      >
         <h1 className="header">
-          <strong>Hello Ola Introduction to Healthy Living</strong>
+          <strong>Introduction to Healthy Living</strong>
         </h1>
         <p>
           Healthy living involves making positive choices that enhance your
@@ -20,6 +28,7 @@ export default class PageFirst extends Component {
             src="https://www.youtube.com/embed/c06dTj0v0sM"
             title="YouTube video"
             allowfullscreen
+            style={{ borderRadius: "20px" }}
           />
         </div>
         <p>

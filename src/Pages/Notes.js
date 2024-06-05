@@ -4,6 +4,7 @@ import { Container } from "react-bootstrap";
 import NotesBlock from "../Components/NotesBlock";
 import addNote from "../Pictures/plus-png.png";
 import AddRecordForm from "./ask-pages/AddRecordForm";
+import backgroundImage from "../Pictures/note-background.png";
 
 const History = () => {
   const [show, setShow] = useState(false);
@@ -16,36 +17,47 @@ const History = () => {
     setRecords([...records, newRecord]);
   };
 
+  const backgroundStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+  };
   return (
     <>
-      <Header />
-      <Container>
-      <AddRecordForm
-        show={show}
-        handleClose={handleClose}
-        handleAdd={handleAdd}
-        editParametrs={0}
-      />
-        <div className="header-div">
-          <h1>Notes</h1>
-          <div style={{ marginLeft: "auto" }}>
-            <img
-              src={addNote}
-              height="30"
-              width="30"
-              alt="RemoveFriend"
-              style={{ margin: "15px", filter: "brightness(0) invert(1)" }}
-              onClick={handleShow}
-            />
+      <div style={backgroundStyle}>
+        <Header />
+        <Container>
+          <AddRecordForm
+            show={show}
+            handleClose={handleClose}
+            handleAdd={handleAdd}
+            editParametrs={0}
+          />
+          <div className="header-div">
+            <h1>Notes</h1>
+            <div style={{ marginLeft: "auto" }}>
+              <img
+                src={addNote}
+                height="30"
+                width="30"
+                alt="RemoveFriend"
+                style={{ margin: "15px", filter: "brightness(0) invert(1)" }}
+                onClick={handleShow}
+              />
+            </div>
           </div>
-        </div>
 
-        <NotesBlock data="21-09-2024" />
-        <NotesBlock data="20-09-2024" />
-        <NotesBlock data="19-09-2024" />
-        <NotesBlock data="18-09-2024" />
-        <NotesBlock data="17-09-2024" />
-      </Container>
+          <NotesBlock data="21-09-2024" />
+          <NotesBlock data="20-09-2024" />
+          <NotesBlock data="19-09-2024" />
+          <NotesBlock data="18-09-2024" />
+          <NotesBlock data="17-09-2024" />
+        </Container>
+      </div>
     </>
   );
 };

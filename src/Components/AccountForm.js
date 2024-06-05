@@ -15,7 +15,17 @@ const AccountForm = () => {
 
   return (
     <Row className="justify-content-md-center">
-      <Col md="8">
+      <Col
+        md="8"
+        style={{
+          marginTop: "10px",
+          padding: "30px",
+          paddingBottom: "5px",
+          backgroundColor: "#22262a",
+          borderRadius: "20px",
+          padding: "20px",
+        }}
+      >
         <div className="form-header">
           <h2 style={{ color: "white" }}>{"Account Settings"}</h2>
         </div>

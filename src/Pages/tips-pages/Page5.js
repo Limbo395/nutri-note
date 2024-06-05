@@ -6,7 +6,14 @@ import VideoWithHeader from "../../Components/VideoWithHeader";
 export default class Page5 extends Component {
   render() {
     return (
-      <Container style={{ marginBottom: "150px", marginTop: "30px" }}>
+      <Container
+        style={{
+          marginTop: "10px",
+          padding: "40px",
+          backgroundColor: "#22262a",
+          borderRadius: "20px",
+        }}
+      >
         <VideoWithHeader
           text="The Science of Sleep: How to Sleep Better"
           link="https://www.youtube.com/embed/pwaWilO_Pig"

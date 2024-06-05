@@ -5,7 +5,14 @@ import "./Page3.css";
 export default class Page3 extends Component {
   render() {
     return (
-      <Container style={{ marginBottom: "150px", marginTop: "30px" }}>
+      <Container
+        style={{
+          marginTop: "10px",
+          padding: "40px",
+          backgroundColor: "#22262a",
+          borderRadius: "20px",
+        }}
+      >
         <h1 className="header">
           <strong>Regular Exercise</strong>
         </h1>

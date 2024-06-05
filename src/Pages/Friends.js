@@ -5,6 +5,7 @@ import FriendBlock from "../Components/FriendBlock";
 import addFriend from "../Pictures/add-friend.png";
 import AddFriend from "../Pages/ask-pages/AddFriend";
 import axios from "axios";
+import backgroundImage from "../Pictures/friends-background.png";
 
 const Friends = () => {
   const [show, setShow] = useState(false);
@@ -39,29 +40,45 @@ const Friends = () => {
     setRecords([...records, newRecord]);
   };
 
+  const backgroundStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+  };
+
   return (
     <>
-      <Header />
-      <Container>
-        <AddFriend show={show} handleClose={handleClose} handleAdd={handleAdd} />
-        <div className="header-div">
-          <h1>Friends</h1>
-          <div style={{ marginLeft: "auto" }}>
-            <img
-              src={addFriend}
-              height="30"
-              width="30"
-              alt="AddFriend"
-              style={{ margin: "15px", filter: "brightness(0) invert(1)" }}
-              onClick={handleShow}
-            />
+      <div style={backgroundStyle}>
+        <Header />
+        <Container>
+          <AddFriend
+            show={show}
+            handleClose={handleClose}
+            handleAdd={handleAdd}
+          />
+          <div className="header-div">
+            <h1>Friends</h1>
+            <div style={{ marginLeft: "auto" }}>
+              <img
+                src={addFriend}
+                height="30"
+                width="30"
+                alt="AddFriend"
+                style={{ margin: "15px", filter: "brightness(0) invert(1)" }}
+                onClick={handleShow}
+              />
+            </div>
           </div>
-        </div>
 
-        {records.map((friend) => (
-          <FriendBlock key={friend.Id} name={friend.Tag} />
-        ))}
-      </Container>
+          {records.map((friend) => (
+            <FriendBlock key={friend.Id} name={friend.Tag} />
+          ))}
+        </Container>
+      </div>
     </>
   );
 };

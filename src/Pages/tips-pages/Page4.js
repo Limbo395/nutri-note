@@ -4,7 +4,14 @@ import { Container } from "react-bootstrap";
 export default class Page4 extends Component {
   render() {
     return (
-      <Container style={{ marginBottom: "150px", marginTop: "30px" }}>
+      <Container
+        style={{
+          marginTop: "10px",
+          padding: "40px",
+          backgroundColor: "#22262a",
+          borderRadius: "20px",
+        }}
+      >
         <h1 className="header">
           <strong>Mental Health and Well-being</strong>
         </h1>

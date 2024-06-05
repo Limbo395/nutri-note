@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./AuthPage.css";
 import logo from "../Pictures/Logo.png";
-
+import backgroundImage from "../Pictures/log-in-image.jpg";
+import backgroundImageBox from "../Pictures/log-in-image-box.png";
+// log-in-image-box
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
@@ -24,7 +26,9 @@ const AuthPage = () => {
 
     try {
       const endpoint = isLogin ? "/api/login" : "/api/register";
-      const payload = isLogin ? { email, password } : { email, password, username };
+      const payload = isLogin
+        ? { email, password }
+        : { email, password, username };
 
       const response = await axios.post(endpoint, payload);
 
@@ -38,9 +42,29 @@ const AuthPage = () => {
     }
   };
 
+  const backgroundStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    height: "100vh",
+    margin: "0",
+  };
+  const backgroundStyleBox = {
+    backgroundImage: `url(${backgroundImageBox})`,
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    height: "auto",
+    margin: "0",
+  };
+
   return (
-    <div className="auth-wrapper">
-      <Container className="auth-container">
+    <div
+      className="auth-wrapper"
+      style={backgroundStyle}
+    >
+      <Container className="auth-container"  style={backgroundStyleBox}>
         <Row className="justify-content-md-center">
           <Col md="8">
             <div className="form-header">
@@ -68,7 +92,7 @@ const AuthPage = () => {
                 </Form.Group>
               )}
               <Form.Group controlId="formBasicEmail">
-              <Form.Label style={{ color: "black" }}>
+                <Form.Label style={{ color: "black" }}>
                   Email address
                 </Form.Label>
                 <Form.Control
@@ -91,7 +115,9 @@ const AuthPage = () => {
               </Form.Group>
               {!isLogin && (
                 <Form.Group controlId="formBasicPasswordRepeat">
-                  <Form.Label style={{ color: "black" }}>Repeat Password</Form.Label>
+                  <Form.Label style={{ color: "black" }}>
+                    Repeat Password
+                  </Form.Label>
                   <Form.Control
                     type="password"
                     placeholder="Repeat password"
