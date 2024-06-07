@@ -74,8 +74,8 @@ const Friends = () => {
             </div>
           </div>
 
-          {records.map((friend) => (
-            <FriendBlock key={friend.Id} name={friend.Tag} />
+            {records.map((friend) => (
+            <FriendBlock key={friend.Id} name={friend.Tag} id={friend.Id} />
           ))}
         </Container>
       </div>

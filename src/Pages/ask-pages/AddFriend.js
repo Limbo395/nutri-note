@@ -8,26 +8,32 @@ const AddFriend = ({ show, handleClose }) => {
 
   const handleAdd = async ({ friendTag }) => {
     try {
-      const token = localStorage.getItem("token"); 
-      const response = await axios.post(
-        "http://34.79.184.250/api/add-friend",
-        { friendTag },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const token = localStorage.getItem("token");
+        console.log("Token from localStorage:", token); // Додано для перевірки
+        if (!token) {
+            alert("No token found, please log in again.");
+            return;
         }
-      );
-      if (response.data.success) {
-        alert("Friend added successfully!");
-      } else {
-        alert("Failed to add friend: " + response.data.message);
-      }
+        const response = await axios.post(
+            "http://localhost:3000/api/add-friend",
+            { friendTag },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        if (response.data.success) {
+            alert("Friend added successfully!");
+        } else {
+            alert("Failed to add friend: " + response.data.message);
+        }
     } catch (error) {
-      console.error("Error adding friend:", error);
-      alert("Error adding friend");
+        console.error("Error adding friend:", error);
+        alert("Error adding friend: " + error.response?.data?.message || error.message);
     }
-  };
+};
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();

@@ -4,15 +4,13 @@ import deletePng from "../Pictures/trashPng.png";
 import "./FriendBlock.css";
 import axios from "axios";
 
-const FriendBlock = ({ friend }) => {
-  const { Id, Tag } = friend;
-
+const FriendBlock = ({ name, id }) => {
   const handleRemoveFriend = async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://34.79.184.250/api/remove-friend",
-        { friendId: Id },
+        "http://localhost:3000/api/remove-friend",
+        { friendId: id },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -38,7 +36,7 @@ const FriendBlock = ({ friend }) => {
         alt="Friend avatar"
         className="circular-image-standart"
       />
-      <strong style={{ fontSize: "20px" }}>{Tag}</strong>
+      <strong style={{ fontSize: "20px" }}>{name}</strong>
       <div style={{ marginLeft: "auto" }}>
         <img
           src={deletePng}
