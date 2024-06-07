@@ -18,7 +18,7 @@ const Friends = () => {
     const fetchFriends = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://34.79.184.250/api/friends", {
+        const response = await axios.get("http://localhost:3000/api/friends", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

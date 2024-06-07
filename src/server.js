@@ -34,14 +34,12 @@ const generateToken = (userId) => {
 
 const getCurrentUserId = (req) => {
     const token = req.headers['authorization']?.split(' ')[1];
-    console.log("Token from headers:", token);
     if (!token) {
         return null;
     }
 
     try {
         const decoded = jwt.verify(token, secretKey);
-        console.log("Decoded token:", decoded);
         return decoded.userId;
     } catch (err) {
         console.error('Invalid token:', err);
@@ -86,9 +84,9 @@ app.post('/api/register', (req, res) => {
                 res.status(500).send({ success: false, message: 'Server error' });
                 return;
             }
-            const userId = result.insertId; 
-            const token = generateToken(userId); 
-            res.send({ success: true, userId, token }); 
+            const userId = result.insertId;
+            const token = generateToken(userId);
+            res.send({ success: true, userId, token });
         });
     });
 });
@@ -105,8 +103,8 @@ app.post('/api/login', (req, res) => {
         }
         if (results.length > 0) {
             const user = results[0];
-            const userId = user.Id; 
-            const token = generateToken(userId); 
+            const userId = user.Id;
+            const token = generateToken(userId);
             res.send({ success: true, userId, token });
         } else {
             res.send({ success: false, message: 'Invalid credentials' });
@@ -117,23 +115,23 @@ app.post('/api/login', (req, res) => {
 app.get('/api/get-user', authenticate, (req, res) => {
     const currentUserId = req.userId;
     const query = 'SELECT Tag AS username, Email AS email, Height AS height, Weight AS weight, Age AS age, Gender AS gender FROM Users WHERE Id = ?';
-  
+
     connection.query(query, [currentUserId], (err, results) => {
-      if (err) {
-        console.error('Error fetching user data:', err);
-        res.status(500).send({ success: false, message: 'Server error' });
-        return;
-      }
-  
-      if (results.length > 0) {
-        res.send(results[0]);
-      } else {
-        res.status(404).send({ success: false, message: 'User not found' });
-      }
+        if (err) {
+            console.error('Error fetching user data:', err);
+            res.status(500).send({ success: false, message: 'Server error' });
+            return;
+        }
+
+        if (results.length > 0) {
+            res.send(results[0]);
+        } else {
+            res.status(404).send({ success: false, message: 'User not found' });
+        }
     });
-  });
-  
-  
+});
+
+
 
 app.post('/api/edit-user', authenticate, (req, res) => {
     const currentUserId = req.user.userId;
@@ -165,19 +163,39 @@ app.get('/api/get-calories', authenticate, (req, res) => {
       ORDER BY Date DESC
       LIMIT 5
     `;
-  
+
     connection.query(query, [currentUserId], (err, results) => {
+        if (err) {
+            console.error('Error fetching calorie data:', err);
+            res.status(500).send({ success: false, message: 'Server error' });
+            return;
+        }
+
+        res.send({ success: true, calories: results });
+    });
+});
+
+app.get('/api/last-calories/:friendId', authenticate, (req, res) => {
+    const { friendId } = req.params;
+    const query = 'SELECT Callories, Date FROM Records WHERE Id = ? ORDER BY Date DESC LIMIT 1';
+  
+    connection.query(query, [friendId], (err, results) => {
       if (err) {
-        console.error('Error fetching calorie data:', err);
+        console.error('Error fetching last calorie record:', err);
         res.status(500).send({ success: false, message: 'Server error' });
         return;
       }
   
-      res.send({ success: true, calories: results });
+      if (results.length > 0) {
+        res.send({ success: true, lastCalories: results[0] });
+      } else {
+        res.send({ success: true, lastCalories: null });
+      }
     });
   });
   
-  
+
+
 
 app.get('/api/notes', authenticate, (req, res) => {
     const currentUserId = req.userId;
@@ -194,7 +212,6 @@ app.get('/api/notes', authenticate, (req, res) => {
     });
 });
 
-// Додавання нотатки
 app.post('/api/add-note', authenticate, (req, res) => {
     const currentUserId = req.userId;
     const { calories, comment } = req.body;

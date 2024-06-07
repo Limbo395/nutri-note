@@ -30,14 +30,17 @@ const NotesBlock = ({ id, data, calories, comment }) => {
       />
       <div className="div-border">
         <img
-          style={{ margin: "10px" }}
+          style={{ margin: "10px", width:"40px", height: "auto" }}
           src={notePng}
           alt="Note"
           className="image"
         />
         <div className="note-content">
           <strong style={{ fontSize: "20px" }}>{formatDate(data)}</strong>
+          <div style={{display:"flex"}}>
           <p><strong>Cal:</strong> {calories} kcal</p>
+          <p style={{marginLeft:"60px"}}><strong>Comment:</strong> {comment}</p>
+          </div>
         </div>
         <button 
           style={{ marginLeft: "auto", borderEndEndRadius: "15px", borderStartEndRadius: "15px" }} 

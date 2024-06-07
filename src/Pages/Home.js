@@ -4,6 +4,11 @@ import { Container, Card } from "react-bootstrap";
 import axios from "axios";
 import avocado from "../Pictures/avocado-love.png";
 
+const formatDate = (dateString) => {
+  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
+
 const Home = () => {
   const [caloriesData, setCaloriesData] = useState([]);
   const [userData, setUserData] = useState({ height: 0, weight: 0 });
@@ -63,7 +68,7 @@ const Home = () => {
         }}
       >
         <div style={{ justifyContent: "center" }}>
-          <h1 style={{textAlign: "center"}}>Home page</h1>
+          <h1 style={{ textAlign: "center" }}>Home page</h1>
           <div style={{ textAlign: "center" }}>
             <img
               src={avocado}
@@ -71,15 +76,6 @@ const Home = () => {
               style={{ width: "300px", height: "auto" }}
             />
           </div>
-
-          {caloriesData.map((calories, index) => (
-            <Card key={index} style={{ margin: "10px", padding: "10px" }}>
-              <Card.Body>
-                <Card.Title>{calories.date}</Card.Title>
-                <Card.Text>Calories: {calories.amount}</Card.Text>
-              </Card.Body>
-            </Card>
-          ))}
           <div
             style={{
               display: "flex",
@@ -93,13 +89,16 @@ const Home = () => {
                 BMI: {calculateBMI(userData.height, userData.weight)}
               </p>
             </div>
-            <div style={{ textAlign: "center" }}>
+            <div style={{ textAlign: "center", fontSize: "15px" }}>
               <h2>Calories Data </h2>
-              <p>
-                Avarage value: 331 kcal <br />
-                Today: 321 kcal <br />
-                Yesterday: 422 kcal <br />
-              </p>
+              {caloriesData.slice(0, 5).map((calories, index) => (
+                <Card key={index} style={{ margin: "10px", paddingTop:"3px", paddingBottom: "3px", paddingRight: "1px", paddingLeft:"1px" }}>
+                  <Card.Body style={{padding: "5px"}}>
+                    <Card.Title style={{fontSize: "17px", marginBottom: "1px"}}>{formatDate(calories.Date)}</Card.Title>
+                    <Card.Text>Calories: {calories.TotalCalories} kcal</Card.Text>
+                  </Card.Body>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
