@@ -22,13 +22,22 @@ const AuthPage = () => {
       return;
     }
 
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long");
+      return;
+    }
+
     try {
-      const endpoint = isLogin ? "/api/login" : "/api/register";
+      const endpoint = isLogin ? "http://localhost:3000/api/login" : "http://localhost:3000/api/register";
       const payload = isLogin ? { email, password } : { email, password, username };
 
       const response = await axios.post(endpoint, payload);
 
       if (response.data.success) {
+        const { userId, token } = response.data;
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("token", token);
+        
         navigate("/home");
       } else {
         setError(response.data.message || "An error occurred");
@@ -68,7 +77,7 @@ const AuthPage = () => {
                 </Form.Group>
               )}
               <Form.Group controlId="formBasicEmail">
-              <Form.Label style={{ color: "black" }}>
+                <Form.Label style={{ color: "black" }}>
                   Email address
                 </Form.Label>
                 <Form.Control
@@ -102,7 +111,7 @@ const AuthPage = () => {
                 </Form.Group>
               )}
               <div className="form-footer">
-                <Button variant="primary" type="submit" block>
+                <Button variant="primary" type="submit" block="true">
                   {isLogin ? "Login" : "Register"}
                 </Button>
               </div>
