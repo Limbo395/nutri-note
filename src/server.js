@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 
 const app = express();
-const port = 3000 ;
+const port = 3000;
 const secretKey = 'Hb7YcAe3rL9gNjP2sR5wT1qZu4vXyB6';
 
 app.use(cors());
@@ -31,25 +31,25 @@ connection.connect(err => {
 });
 
 const generateToken = (userId) => {
-    return jwt.sign({ userId }, secretKey, { expiresIn: '1h' });
+    return jwt.sign({ userId }, secretKey, { expiresIn: '24h' });
 };
 
 const getCurrentUserId = (req) => {
     const token = req.headers['authorization']?.split(' ')[1];
     console.log("Token from headers:", token); // Додано для перевірки токену
     if (!token) {
-      return null;
+        return null;
     }
-  
+
     try {
-      const decoded = jwt.verify(token, secretKey);
-      console.log("Decoded token:", decoded); // Додано для перевірки декодованого токену
-      return decoded.userId;
+        const decoded = jwt.verify(token, secretKey);
+        console.log("Decoded token:", decoded); // Додано для перевірки декодованого токену
+        return decoded.userId;
     } catch (err) {
-      console.error('Invalid token:', err);
-      return null;
+        console.error('Invalid token:', err);
+        return null;
     }
-  };
+};
 
 const authenticate = (req, res, next) => {
     const userId = getCurrentUserId(req);
@@ -126,13 +126,38 @@ app.post('/api/login', (req, res) => {
     });
 });
 
-app.post('/api/edit-user', authenticate, (req, res) => {
+app.get('/api/get-user', authenticate, (req, res) => {
     const currentUserId = req.userId;
-    const { username, email, password } = req.body;
+    const query = 'SELECT Tag AS username, Email AS email, Height AS height, Weight AS weight, Age AS age, Gender AS gender FROM Users WHERE Id = ?';
+  
+    connection.query(query, [currentUserId], (err, results) => {
+      if (err) {
+        console.error('Error fetching user data:', err);
+        res.status(500).send({ success: false, message: 'Server error' });
+        return;
+      }
+  
+      if (results.length > 0) {
+        res.send(results[0]);
+      } else {
+        res.status(404).send({ success: false, message: 'User not found' });
+      }
+    });
+  });
+  
+  
 
-    const query = 'UPDATE Users SET Tag = ?, Email = ?, Password = ? WHERE user_id = ?';
+app.post('/api/edit-user', authenticate, (req, res) => {
+    const currentUserId = req.user.userId;
+    const { username, email, password, height, weight, age, gender } = req.body;
 
-    connection.query(query, [username, email, password, currentUserId], (err) => {
+    const query = `
+        UPDATE Users
+        SET Tag = ?, Email = ?, Password = ?, Height = ?, Weight = ?, Age = ?, Gender = ?
+        WHERE Id = ?
+    `;
+
+    connection.query(query, [username, email, password, height, weight, age, gender, currentUserId], (err) => {
         if (err) {
             console.error('Error updating user:', err);
             res.status(500).send({ success: false, message: 'Server error' });
@@ -142,36 +167,29 @@ app.post('/api/edit-user', authenticate, (req, res) => {
     });
 });
 
-// app.post('/api/upload-avatar', authenticate, upload.single('avatar'), (req, res) => {
-//     const currentUserId = req.userId;
-//     const avatarURL = `/uploads/avatars/${req.file.filename}`;
-
-//     const query = 'UPDATE Users SET AvatarURL = ? WHERE user_id = ?';
-
-//     connection.query(query, [avatarURL, currentUserId], (err) => {
-//         if (err) {
-//             console.error('Error uploading avatar:', err);
-//             res.status(500).send({ success: false, message: 'Server error' });
-//             return;
-//         }
-//         res.send({ success: true });
-//     });
-// });
-
-// app.post('/api/delete-avatar', authenticate, (req, res) => {
-//     const currentUserId = req.userId;
-
-//     const query = 'UPDATE Users SET AvatarURL = NULL WHERE user_id = ?';
-
-//     connection.query(query, [currentUserId], (err) => {
-//         if (err) {
-//             console.error('Error deleting avatar:', err);
-//             res.status(500).send({ success: false, message: 'Server error' });
-//             return;
-//         }
-//         res.send({ success: true });
-//     });
-// });
+app.get('/api/get-calories', authenticate, (req, res) => {
+    const currentUserId = req.userId;
+    const query = `
+      SELECT Date, SUM(Callories) as TotalCalories
+      FROM Records
+      WHERE Id = ?
+      GROUP BY Date
+      ORDER BY Date DESC
+      LIMIT 5
+    `;
+  
+    connection.query(query, [currentUserId], (err, results) => {
+      if (err) {
+        console.error('Error fetching calorie data:', err);
+        res.status(500).send({ success: false, message: 'Server error' });
+        return;
+      }
+  
+      res.send({ success: true, calories: results });
+    });
+  });
+  
+  
 
 app.get('/api/notes', authenticate, (req, res) => {
     const currentUserId = req.userId;
@@ -180,14 +198,15 @@ app.get('/api/notes', authenticate, (req, res) => {
 
     connection.query(query, [currentUserId], (err, results) => {
         if (err) {
-            console.error('Error fetching calorie records:', err);
+            console.error('Error retrieving notes:', err);
             res.status(500).send({ success: false, message: 'Server error' });
             return;
         }
-        res.send({ success: true, notes: results });
+        res.send({ success: true, records: results });
     });
 });
 
+// Додавання нотатки
 app.post('/api/add-note', authenticate, (req, res) => {
     const currentUserId = req.userId;
     const { calories, comment } = req.body;
@@ -209,30 +228,41 @@ app.post('/api/delete-note', authenticate, (req, res) => {
     const { noteId } = req.body;
 
     const query = 'DELETE FROM Records WHERE IdOfRecord = ? AND Id = ?';
+    console.log(`Attempting to delete noteId: ${noteId} for userId: ${currentUserId}`);
 
-    connection.query(query, [noteId, currentUserId], (err) => {
+    connection.query(query, [noteId, currentUserId], (err, result) => {
         if (err) {
             console.error('Error deleting calorie entry:', err);
             res.status(500).send({ success: false, message: 'Server error' });
             return;
         }
-        res.send({ success: true });
+        if (result.affectedRows > 0) {
+            console.log('Note deleted successfully');
+            res.send({ success: true });
+        } else {
+            console.log('Note not found or not authorized');
+            res.send({ success: false, message: 'Note not found or not authorized' });
+        }
     });
 });
 
+
 app.post('/api/edit-note', authenticate, (req, res) => {
-    const currentUserId = req.userId;
-    const { noteId, calories, comment, noteDate } = req.body;
+    const { noteId, calories, comment, date } = req.body;
 
-    const query = 'UPDATE Records SET Callories = ?, Comment = ?, Date = ? WHERE IdOfRecord = ? AND Id = ?';
+    if (!date) {
+        return res.status(400).json({ success: false, message: 'Date is required' });
+    }
 
-    connection.query(query, [calories, comment, noteDate, noteId, currentUserId], (err) => {
+    let sql = `UPDATE Records SET Callories = ?, Comment = ?, Date = ? WHERE IdOfRecord = ? AND Id = ?`;
+    const values = [calories, comment, date, noteId, req.user.userId];
+
+    connection.query(sql, values, (err, result) => {
         if (err) {
-            console.error('Error updating calorie entry:', err);
-            res.status(500).send({ success: false, message: 'Server error' });
-            return;
+            console.error("Error updating calorie entry:", err);
+            return res.status(500).json({ success: false, message: err.message });
         }
-        res.send({ success: true });
+        res.json({ success: true });
     });
 });
 
@@ -240,49 +270,35 @@ app.post('/api/add-friend', authenticate, (req, res) => {
     const currentUserId = req.userId;
     const { friendTag } = req.body;
 
-    // Перевірка чи користувач не намагається додати себе як друга
-    if (friendTag === currentUserId) {
-        return res.status(400).send({ success: false, message: "You cannot add yourself as a friend" });
-    }
+    const findFriendQuery = 'SELECT Id FROM Users WHERE Tag = ?';
+    const addFriendQuery = 'INSERT INTO Friends (Id, IdOfFriend) VALUES (?, ?)';
 
-    // Перевірка чи існує вже такий друг
-    const checkQuery = 'SELECT * FROM Users WHERE Tag = ?';
-    connection.query(checkQuery, [friendTag], (err, results) => {
+    connection.query(findFriendQuery, [friendTag], (err, results) => {
         if (err) {
-            console.error('Error during checking friend:', err);
-            return res.status(500).send({ success: false, message: 'Server error' });
+            console.error('Error finding friend:', err);
+            res.status(500).send({ success: false, message: 'Server error' });
+            return;
         }
 
         if (results.length === 0) {
-            return res.status(404).send({ success: false, message: 'Friend not found' });
+            res.status(404).send({ success: false, message: 'Friend not found' });
+            return;
         }
 
         const friendId = results[0].Id;
-        
-        // Перевірка чи вже є такий друг
-        const checkFriendshipQuery = 'SELECT * FROM Friends WHERE Id = ? AND IdOfFriend = ?';
-        connection.query(checkFriendshipQuery, [currentUserId, friendId], (err, results) => {
+
+        connection.query(addFriendQuery, [currentUserId, friendId], (err) => {
             if (err) {
-                console.error('Error during checking friendship:', err);
-                return res.status(500).send({ success: false, message: 'Server error' });
+                console.error('Error adding friend:', err);
+                res.status(500).send({ success: false, message: 'Server error' });
+                return;
             }
-
-            if (results.length > 0) {
-                return res.status(400).send({ success: false, message: 'You are already friends' });
-            }
-
-            // Додавання друга
-            const insertQuery = 'INSERT INTO Friends (Id, IdOfFriend) VALUES (?, ?)';
-            connection.query(insertQuery, [currentUserId, friendId], (err) => {
-                if (err) {
-                    console.error('Error adding friend:', err);
-                    return res.status(500).send({ success: false, message: 'Server error' });
-                }
-                res.send({ success: true });
-            });
+            res.send({ success: true });
         });
     });
 });
+
+
 
 app.post('/api/remove-friend', authenticate, (req, res) => {
     const currentUserId = req.userId;
@@ -304,11 +320,11 @@ app.get('/api/friends', authenticate, (req, res) => {
     const currentUserId = req.userId;
 
     const query = `
-        SELECT u.Id, u.Tag, u.Email
-        FROM Users u
-        JOIN Friends f ON u.Id = f.IdOfFriend
-        WHERE f.Id = ?
-    `;
+    SELECT u.Id, u.Tag, u.Email
+    FROM Users u
+    JOIN Friends f ON u.Id = f.IdOfFriend
+    WHERE f.Id = ?
+`;
 
     connection.query(query, [currentUserId], (err, results) => {
         if (err) {

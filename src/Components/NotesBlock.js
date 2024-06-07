@@ -1,38 +1,48 @@
+
 import notePng from "../Pictures/note-png.png";
 import React, { useState } from "react";
 import "./NotesBlock.css";
-import AddRecordForm from "../Pages/ask-pages/AddRecordForm";
+import EditRecordForm from "../Pages/ask-pages/EditRecordForm";
 
-const NotesBlock = ({ data, link }) => {
+const formatDate = (dateString) => {
+  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
+
+const NotesBlock = ({ id, data, calories, comment }) => {
   const [show, setShow] = useState(false);
-  const [records, setRecords] = useState([]);
+  const [editId, setEditId] = useState(null);
 
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
-
-  const handleAdd = (newRecord) => {
-    setRecords([...records, newRecord]);
+  const handleShow = () => {
+    setEditId(id);
+    setShow(true);
   };
+  const handleClose = () => setShow(false);
 
   return (
     <>
-      <AddRecordForm
+      <EditRecordForm
         show={show}
         handleClose={handleClose}
-        handleAdd={handleAdd}
-        editParametrs={1}
+        recordId={editId}
+        initialCalories={calories}
+        initialComment={comment}
       />
       <div className="div-border">
         <img
           style={{ margin: "10px" }}
           src={notePng}
-          alt="Self account"
+          alt="Note"
           className="image"
-          
         />
-        <strong style={{ fontSize: "20px" }}>{data}</strong>
-
-        <button style={{ marginLeft: "auto", borderEndEndRadius: "15px", borderStartEndRadius: "15px" }} onClick={handleShow}>
+        <div className="note-content">
+          <strong style={{ fontSize: "20px" }}>{formatDate(data)}</strong>
+          <p><strong>Cal:</strong> {calories} kcal</p>
+        </div>
+        <button 
+          style={{ marginLeft: "auto", borderEndEndRadius: "15px", borderStartEndRadius: "15px" }} 
+          onClick={handleShow}
+        >
           <h5 style={{ margin: "20px" }}>
             <strong>Edit</strong>
           </h5>
