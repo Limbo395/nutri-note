@@ -2,10 +2,8 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-// const multer = require('multer');
 const path = require('path');
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
 
 const app = express();
 const port = 3000;
@@ -17,7 +15,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const connection = mysql.createConnection({
     host: '34.79.184.250',
-    user: 'root',
+    user: 'Limbo',
     password: '',
     database: 'NutriNote'
 });
@@ -36,14 +34,14 @@ const generateToken = (userId) => {
 
 const getCurrentUserId = (req) => {
     const token = req.headers['authorization']?.split(' ')[1];
-    console.log("Token from headers:", token); // Додано для перевірки токену
+    console.log("Token from headers:", token);
     if (!token) {
         return null;
     }
 
     try {
         const decoded = jwt.verify(token, secretKey);
-        console.log("Decoded token:", decoded); // Додано для перевірки декодованого токену
+        console.log("Decoded token:", decoded);
         return decoded.userId;
     } catch (err) {
         console.error('Invalid token:', err);
@@ -59,16 +57,6 @@ const authenticate = (req, res, next) => {
     req.userId = userId;
     next();
 };
-
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, 'uploads/avatars');
-//     },
-//     filename: (req, file, cb) => {
-//         cb(null, `${Date.now()}-${file.originalname}`);
-//     }
-// });
-// const upload = multer({ storage: storage });
 
 app.post('/api/register', (req, res) => {
     const { username, email, password } = req.body;
@@ -98,9 +86,9 @@ app.post('/api/register', (req, res) => {
                 res.status(500).send({ success: false, message: 'Server error' });
                 return;
             }
-            const userId = result.insertId; // Отримання ідентифікатора користувача з результату вставки
-            const token = generateToken(userId); // Створення токена з ідентифікатором користувача
-            res.send({ success: true, userId, token }); // Відправка ідентифікатора та токена відповіддю
+            const userId = result.insertId; 
+            const token = generateToken(userId); 
+            res.send({ success: true, userId, token }); 
         });
     });
 });
@@ -117,9 +105,9 @@ app.post('/api/login', (req, res) => {
         }
         if (results.length > 0) {
             const user = results[0];
-            const userId = user.Id; // Отримання ідентифікатора користувача з результату запиту
-            const token = generateToken(userId); // Створення токена з ідентифікатором користувача
-            res.send({ success: true, userId, token }); // Відправка ідентифікатора та токена відповіддю
+            const userId = user.Id; 
+            const token = generateToken(userId); 
+            res.send({ success: true, userId, token });
         } else {
             res.send({ success: false, message: 'Invalid credentials' });
         }
@@ -149,15 +137,15 @@ app.get('/api/get-user', authenticate, (req, res) => {
 
 app.post('/api/edit-user', authenticate, (req, res) => {
     const currentUserId = req.user.userId;
-    const { username, email, password, height, weight, age, gender } = req.body;
+    const { username, email, password, height, weight, age } = req.body;
 
     const query = `
         UPDATE Users
-        SET Tag = ?, Email = ?, Password = ?, Height = ?, Weight = ?, Age = ?, Gender = ?
+        SET Tag = ?, Email = ?, Password = ?, Height = ?, Weight = ?, Age = ?
         WHERE Id = ?
     `;
 
-    connection.query(query, [username, email, password, height, weight, age, gender, currentUserId], (err) => {
+    connection.query(query, [username, email, password, height, weight, age, currentUserId], (err) => {
         if (err) {
             console.error('Error updating user:', err);
             res.status(500).send({ success: false, message: 'Server error' });

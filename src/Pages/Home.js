@@ -17,17 +17,23 @@ const Home = () => {
           return;
         }
 
-        const userResponse = await axios.get("http://localhost:3000/api/get-user", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const userResponse = await axios.get(
+          "http://localhost:3000/api/get-user",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-        const caloriesResponse = await axios.get("http://localhost:3000/api/get-calories", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const caloriesResponse = await axios.get(
+          "http://localhost:3000/api/get-calories",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         setUserData(userResponse.data);
         setCaloriesData(caloriesResponse.data.calories);
@@ -48,29 +54,53 @@ const Home = () => {
   return (
     <>
       <Header />
-      <Container>
-        <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", padding: "20px" }}>
-          <div>
-            <img src={avocado} alt="Avocado" style={{ width: "200px", height: "200px" }} />
+      <Container
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "20px",
+        }}
+      >
+        <div style={{ justifyContent: "center" }}>
+          <h1 style={{textAlign: "center"}}>Home page</h1>
+          <div style={{ textAlign: "center" }}>
+            <img
+              src={avocado}
+              alt="Avocado"
+              style={{ width: "300px", height: "auto" }}
+            />
           </div>
-          <div>
-            <h2>Calories Data</h2>
-            {caloriesData.map((calories, index) => (
-              <Card key={index} style={{ margin: "10px", padding: "10px" }}>
-                <Card.Body>
-                  <Card.Title>{calories.date}</Card.Title>
-                  <Card.Text>Calories: {calories.amount}</Card.Text>
-                </Card.Body>
-              </Card>
-            ))}
-          </div>
-          <div>
-            <h2>Body Mass Index (BMI)</h2>
-            <p>
-              Height: {userData.height} cm <br />
-              Weight: {userData.weight} kg <br />
-              BMI: {calculateBMI(userData.height, userData.weight)}
-            </p>
+
+          {caloriesData.map((calories, index) => (
+            <Card key={index} style={{ margin: "10px", padding: "10px" }}>
+              <Card.Body>
+                <Card.Title>{calories.date}</Card.Title>
+                <Card.Text>Calories: {calories.amount}</Card.Text>
+              </Card.Body>
+            </Card>
+          ))}
+          <div
+            style={{
+              display: "flex",
+            }}
+          >
+            <div style={{ textAlign: "center", marginRight: "50px" }}>
+              <h2>Body Mass Index</h2>
+              <p>
+                Height: {userData.height} cm <br />
+                Weight: {userData.weight} kg <br />
+                BMI: {calculateBMI(userData.height, userData.weight)}
+              </p>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <h2>Calories Data </h2>
+              <p>
+                Avarage value: 331 kcal <br />
+                Today: 321 kcal <br />
+                Yesterday: 422 kcal <br />
+              </p>
+            </div>
           </div>
         </div>
       </Container>

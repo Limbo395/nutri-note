@@ -10,7 +10,6 @@ const AccountForm = () => {
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [age, setAge] = useState("");
-  const [gender, setGender] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -30,7 +29,7 @@ const AccountForm = () => {
 
       const response = await axios.post(
         "http://localhost:3000/api/edit-user",
-        { username, email, password, height, weight, age, gender },
+        { username, email, password, height, weight, age },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -140,22 +139,9 @@ const AccountForm = () => {
                   required
                 />
               </Form.Group>
-              <Form.Group controlId="formGender">
-                <Form.Label style={{ color: "white" }}>Gender</Form.Label>
-                <Form.Control
-                  as="select"
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                  required
-                >
-                  <option value="">Select gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                </Form.Control>
-              </Form.Group>
+              
               <div className="form-footer">
-                <Button variant="primary" type="submit" block>
+                <Button variant="primary" type="submit" block style={{marginBottom: "20px"}}>
                   Save Changes
                 </Button>
               </div>
